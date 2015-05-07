@@ -1,0 +1,13 @@
+ 
+      A oa=new A();
+
+1) how many object are creted here ?
+-> 2 objects JVM creates an object, it also creates a java.lang.Class object that describes the type of the object.
+Read more: http://javarevisited.blogspot.com/2010/10/what-is-use-of-class-javalangclass-why.html#ixzz3ZRU8IWuW
+
+2) How to check if 2 object are belongs to same class or not ?
+-> oa.getClass()==ob.getClass()
+
+3) How to Invoke any message(System.out.println()) mean while class is loaded into JVM.
+-> place static{ System.out.println("Hello");}  in the required classes.
+
