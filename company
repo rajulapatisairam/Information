@@ -1,0 +1,170 @@
+15/10/15 Thursday:
+
+I used Technologies in:
+•	Interfaces.
+•	Enums.
+•	Generics. 
+•	User Defined Exception. (for file importing functionalities)
+•	Abstract Classes.
+•	Custom Util Classes. (Ex. LoggerUtils.java)
+•	Custom DTD Files.
+•	Custom  XML Files.
+•	Java Reflections.
+•	Developed Custom Frame Work for File Importing.
+•	Java Annotations.
+
+Interface:
+•	SutiWem error
+ public interface SutiWemError {
+		public String getMessage();
+}
+All remaining user defined exceptions are implemented SutiWemError and override super method getMessage();
+•	Date : Pattern.java
+ 	public interface Pattern {
+	public String getPattern();
+}
+		DataPattern and MySQL both are implemented Pattern and implements getPattern();
+			
+
+
+
+
+Enums:
+Date Pattern.java
+public enum DatePatterns implements Pattern{
+				MMM_dd_yyyy_s_hhOmm_s_a("MMM_dd_yyyy hh:mm a"),
+				private String pattern;
+	private DatePatterns(final String pattern)
+	{
+		this.pattern=pattern;
+	}
+	@Override
+	public String getPattern(){
+		return this.pattern;
+	}
+}
+MySQL.java
+	public enum MySQL implements Pattern{
+	DATE(DatePatterns.yyyy_MM_dd);
+private DatePatterns pattern;
+	private MySQL(final DatePatterns pattern)
+	{
+		this.pattern=pattern;
+	}
+	@Override
+	public String getPattern(){
+		return this.pattern.getPattern();
+	}
+
+
+
+
+
+
+
+
+Generics:
+Used for MapUtils for getting key and values are separated with specific string.
+public class HibernateUtils<Entity> {
+	public static final Logger LOGGER = Logger.getLogger(HibernateUtils.class);
+        private Entity entity;
+        private Session session;
+    	private Criteria criteria;
+
+			private HibernateUtils() {
+				super();
+			}
+			public HibernateUtils(Entity entity) {
+				if(entity == null) throw new NullPointerException();
+				session = HibernateSessionFactory.getSession();
+				criteria = session.createCriteria(entity.getClass());
+				this.entity = entity;
+			}
+ 
+			@SuppressWarnings("unchecked")
+			public List<Entity> getEntityData(Map<String,Object> criterias){
+				LOGGER.info(LoggerUtils.methodStartingMessage());
+				for (Map.Entry<String, Object> condition : criterias.entrySet()) {
+					criteria.add(Restrictions.eq(condition.getKey(), condition.getValue()));
+			}
+				List<Entity> result = criteria.list(); 
+				session.clear();
+				session.close();
+				LOGGER.info(LoggerUtils.methodEndingMessage());
+				return result;
+			}
+        
+}
+
+Java Reflections :
+To Get class filed value for collecting those variable values as arraylist.
+public interface RateLibrary{
+    	
+    public String[] REQUEST_ATTRIBUTES = FieldUtils.getClassMemberValues(RequestAttributes.class);
+	public String[] SESSION_ATTRIBUTES  =  FieldUtils.getClassMemberValues(SessionAttributes.class);
+	public  class RequestAttributes{
+		public static String RATELIBRARY = "rateLibrary";
+		public static String DATAFEATURE = "dataFeature";
+		public static String TEXTRATEPLAN = "textRatePlan";
+		public static String ACCTORGMANAGER = "acctOrgManager";
+	}
+	public class SessionAttributes{
+		public static String EXPORT_QUERY = "exportQuery";
+		public static String TARGET_RATE_GROUP_NAME = "trgName";
+		public static String TARGET_RATE_GROUP_NOTES = "trgNotes";
+		public static String RATE_PLAN_TYPE = "ratePlanType";
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+public class FieldUtils {
+public static String[] getClassMemberValues(Class<?> clas) {
+		 Field[] classFields = clas.getFields();   
+	String[] fieldValues = new String[classFields.length]; 
+	
+	/**   used in fieldValues array for represent current index while
+	 *      assign field values to fieldValues array. */
+	int index = 0; 
+	
+	/*  Iterator through classFields[] array list.  */
+	for(Field field : classFields) { 
+			try {
+				/* True for allow accessing the private fields too. */
+				field.setAccessible(Boolean.TRUE);  
+				
+				/** assign individual field value to fieldValues array 
+				      with respective to current index*/
+				fieldValues[index++] = "" + field.get(clas);
+				
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+	return fieldValues;
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+Java Annotations.
+			Developed the custom pagination to automatically select the table fields dynamically develop custom annotations and place on pojo class.
+
