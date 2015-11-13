@@ -155,6 +155,10 @@ public static String[] getClassMemberValues(Class<?> clas) {
 }
 }
 
+Reflections : 
+File file importing in hibernate scenario, mention custom annotation on pojo class properties and base on reflections customized column mapping , file importing dynamically.
+
+
 
 
 
@@ -167,4 +171,11 @@ public static String[] getClassMemberValues(Class<?> clas) {
 
 Java Annotations.
 			Developed the custom pagination to automatically select the table fields dynamically develop custom annotations and place on pojo class.
+
+
+
+Custom JSP Pagination :
+Generics : PaginationUtils class created based on Generics.
+Annotations : crated and placed on pojo class properties.
+
 
